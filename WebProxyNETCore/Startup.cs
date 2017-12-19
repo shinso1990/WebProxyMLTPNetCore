@@ -35,6 +35,22 @@ namespace WebProxyNETCore
                    Configuration.GetValue<string>("CollectionConfigProxy")
                ));
 
+
+            services.AddSingleton<IMongoDBService>(x =>
+               new MongoDBService(
+                   Configuration.GetValue<string>("MongoConStrDB"),
+                   Configuration.GetValue<string>("MongoDefaultDB"),
+                   Configuration.GetValue<string>("CollectionUsuarios"),
+                   Configuration.GetValue<string>("CollectionConfigGrales"),
+                   Configuration.GetValue<string>("CollectionConfigProxy")
+               ));
+
+            services.AddSingleton<IRedisService>(x =>
+            new RedisService(Configuration.GetConnectionString("Redis")));
+
+            services.AddDbContext<WebProxyNETCoreContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("WebProxyNETCoreContext")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

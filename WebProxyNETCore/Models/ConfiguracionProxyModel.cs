@@ -7,17 +7,13 @@ using System.Threading.Tasks;
 
 namespace WebProxyNETCore.Models
 {
-    public class UsuariosModel
+    public class ConfiguracionProxyModel
     {
-        
         public ObjectId Id { get; set; }
 
-        [Key]
-        public string IdString { get;set;}
-
-        public string User { get; set; }
-
-        public string Password { get; set; }
+        public string Key { get; set; }
+        public bool Bloqueada { get; set; }
+        public int TipoContador { get; set; }
 
     }
 }
