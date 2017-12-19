@@ -25,10 +25,16 @@
                     </label>
                 </div>
             </div>
+            <div>
+                <label asp-for="CantidadTope" class="control-label"></label>
+                <input asp-for="CantidadTope" class="form-control" />
+                <span asp-validation-for="CantidadTope" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="TipoContador" class="control-label"></label>
                 <input asp-for="TipoContador" class="form-control" />
                 <span asp-validation-for="TipoContador" class="text-danger"></span>
+                <span class="text-danger">MINUTO=1, HORA=2, DIA=3, MES=4</span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

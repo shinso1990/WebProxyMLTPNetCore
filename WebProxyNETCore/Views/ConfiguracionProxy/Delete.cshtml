@@ -25,6 +25,12 @@
             @Html.DisplayFor(model => model.Bloqueada)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.CantidadTope )
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CantidadTope)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.TipoContador)
         </dt>
         <dd>
@@ -33,7 +39,7 @@
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="IdString" />
+        <input type="hidden" asp-for="Key" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-action="Index">Back to List</a>
     </form>

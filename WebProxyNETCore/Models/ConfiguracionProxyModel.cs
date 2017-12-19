@@ -14,6 +14,7 @@ namespace WebProxyNETCore.Models
         public string Key { get; set; }
         public bool Bloqueada { get; set; }
         public int TipoContador { get; set; }
+        public int CantidadTope { get; set; }
 
     }
 }

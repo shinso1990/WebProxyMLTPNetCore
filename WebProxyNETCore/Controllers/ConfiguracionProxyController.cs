@@ -14,12 +14,14 @@ namespace WebProxyNETCore.Controllers
     public class ConfiguracionProxyController : Controller
     {
         private readonly IMongoDBService _mongoDBService;
+        private readonly IRedisService _redisService;
         private ComunicadorMongoDB<ConfiguracionProxyModel> _comunicador;
 
-        public ConfiguracionProxyController(IMongoDBService mongoDBService)
+        public ConfiguracionProxyController(IMongoDBService mongoDBService, IRedisService redisService )
         {
             _mongoDBService = mongoDBService;
             _comunicador = _mongoDBService.GetInstance<ConfiguracionProxyModel>(_mongoDBService.CollectionConfigProxy);
+            _redisService = redisService;
         }
         // GET: ConfiguracionProxy
         public IActionResult Index()
@@ -60,6 +62,7 @@ namespace WebProxyNETCore.Controllers
             if (ModelState.IsValid)
             {
                 _comunicador.Insert(configuracionProxyModel);
+                //_redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
                 return RedirectToAction(nameof(Index));
             }
             return View(configuracionProxyModel);
@@ -101,7 +104,7 @@ namespace WebProxyNETCore.Controllers
                     var itemExistente = _comunicador.Get(x => x.Key == configuracionProxyModel.Key).FirstOrDefault();
                     configuracionProxyModel.Id = itemExistente.Id;
                     _comunicador.ReplaceOne(x=> x.Key ==   configuracionProxyModel.Key, configuracionProxyModel);
-
+                    //_redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
                 }
                 catch (Exception e)
                 {
@@ -135,6 +138,7 @@ namespace WebProxyNETCore.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var configuracionProxyModel = _comunicador.DeleteOne(m => m.Key == id);
+            //_redisService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 

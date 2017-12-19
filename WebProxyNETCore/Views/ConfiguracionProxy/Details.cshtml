@@ -24,6 +24,12 @@
             @Html.DisplayFor(model => model.Bloqueada)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.CantidadTope)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CantidadTope)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.TipoContador)
         </dt>
         <dd>
@@ -32,6 +38,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.IdString">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Key">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

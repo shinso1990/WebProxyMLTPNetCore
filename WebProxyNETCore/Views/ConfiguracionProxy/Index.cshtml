@@ -20,6 +20,9 @@
                     @Html.DisplayNameFor(model => model.Bloqueada)
                 </th>
                 <th>
+                    @Html.DisplayNameFor(model => model.CantidadTope )
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.TipoContador)
                 </th>
             <th></th>
@@ -35,12 +38,15 @@
                 @Html.DisplayFor(modelItem => item.Bloqueada)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CantidadTope)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.TipoContador)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdString">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdString">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdString">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Key">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Key">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Key">Delete</a>
             </td>
         </tr>
 }
