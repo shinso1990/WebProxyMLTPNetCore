@@ -17,15 +17,18 @@ namespace WebProxyNETCore.Service
 
         public string CollectionConfigProxy { get; }
 
+        public string CollectionInfoReqRes { get; }
+
         public MongoDBService(string connectionString, string defualtDb, 
             string collectionUsuarios, string collectionConfigGrales,
-            string collectionConfigProxy)
+            string collectionConfigProxy, string collectionInfoReqRes)
         {
             ConnectionStringMongoDB = connectionString;
             DefaultDB = defualtDb;
             CollectionUsuarios = collectionUsuarios;
             CollectionConfigGrales = collectionConfigGrales;
             CollectionConfigProxy = collectionConfigProxy;
+            CollectionInfoReqRes = collectionInfoReqRes;
         }
 
         public ComunicadorMongoDB<T> GetInstance<T>(string collectionName) where T : class

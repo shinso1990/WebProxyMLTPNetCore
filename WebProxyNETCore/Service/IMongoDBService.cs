@@ -15,6 +15,7 @@ namespace WebProxyNETCore.Service
         string CollectionUsuarios { get; }
         string CollectionConfigGrales { get; }
         string CollectionConfigProxy { get; }
+        string CollectionInfoReqRes { get; }
 
 
         ComunicadorMongoDB<T> GetInstance<T>(string collectionName) where T : class;

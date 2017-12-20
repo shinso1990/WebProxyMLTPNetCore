@@ -1,0 +1,56 @@
+﻿@model Paginacion<WebProxyNETCore.Models.InfoReqResModel>
+
+@{
+    ViewData["Title"] = "Estadisticas";
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        IP: @Html.TextBox("IP")
+        URI: @Html.TextBox("URI")
+        GroupByIP: @Html.CheckBox("GroupByIP")
+        GroupByURI: @Html.CheckBox("GroupByURI")
+        <input type="submit" value="Filtrar" />
+    </p>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Items.First().IP )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Items.First().URI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Items.First().Permitido )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Items.First().Bloqueado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Items.First().Limitado)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Items ) {
+        <tr>
+            <td> item.IP </td>
+            <td> item.URI </td>
+            <td> item.Permitido </td>
+            <td> item.Bloqueado </td>
+            <td> item.Limitado </td>
+        </tr>
+    }
+    </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+<!--
+    
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+-->

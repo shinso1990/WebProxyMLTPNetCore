@@ -32,7 +32,8 @@ namespace WebProxyNETCore
                    Configuration.GetValue<string>("MongoDefaultDB"),
                    Configuration.GetValue<string>("CollectionUsuarios"),
                    Configuration.GetValue<string>("CollectionConfigGrales"),
-                   Configuration.GetValue<string>("CollectionConfigProxy")
+                   Configuration.GetValue<string>("CollectionConfigProxy"),
+                   Configuration.GetValue<string>("CollectionInfoReqRes")
                ));
 
             services.AddSingleton<IRedisService>(x =>
