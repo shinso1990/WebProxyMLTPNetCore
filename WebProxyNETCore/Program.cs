@@ -18,7 +18,14 @@ namespace WebProxyNETCore
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+         /*   WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
+        */
+        WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseUrls("http://*:5001")
                 .UseStartup<Startup>()
                 .Build();
     }
