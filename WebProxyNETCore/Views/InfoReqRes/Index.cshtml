@@ -1,56 +1,83 @@
-﻿@model Paginacion<WebProxyNETCore.Models.InfoReqResModel>
+﻿@model WebProxyNETCore.Controllers.ListadoGBIpUri
 
 @{
     ViewData["Title"] = "Estadisticas";
 }
+
+<h1>Filtros</h1>
 
 @using (Html.BeginForm())
 {
     <p>
         IP: @Html.TextBox("IP")
         URI: @Html.TextBox("URI")
-        GroupByIP: @Html.CheckBox("GroupByIP")
-        GroupByURI: @Html.CheckBox("GroupByURI")
         <input type="submit" value="Filtrar" />
     </p>
 }
+<br />
+<h1>Group By IP:</h1>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Items.First().IP )
+            @Html.DisplayNameFor(model => model.GBIP.FirstOrDefault().IP )
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Items.First().URI)
+            @Html.DisplayNameFor(model => model.GBIP.FirstOrDefault().Permitido)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Items.First().Permitido )
+            @Html.DisplayNameFor(model => model.GBIP.FirstOrDefault().Bloqueado)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Items.First().Bloqueado)
+            @Html.DisplayNameFor(model => model.GBIP.FirstOrDefault().Limitado)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Items.First().Limitado)
+            @Html.DisplayNameFor(model => model.GBIP.FirstOrDefault().Errado)
         </th>
         <th></th>
     </tr>
-    @foreach (var item in Model.Items ) {
+    @foreach (var item in Model.GBIP ) {
         <tr>
-            <td> item.IP </td>
-            <td> item.URI </td>
-            <td> item.Permitido </td>
-            <td> item.Bloqueado </td>
-            <td> item.Limitado </td>
+            <td> @item.IP </td>
+            <td> @item.Permitido </td>
+            <td> @item.Bloqueado </td>
+            <td> @item.Limitado </td>
+            <td> @item.Errado</td>
         </tr>
     }
     </table>
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+<br />
+<br />
+<h1>Group By URI:</h1>
 
-<!--
-    
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-
--->
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.GBURI.FirstOrDefault().URI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GBURI.FirstOrDefault().Permitido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GBURI.FirstOrDefault().Bloqueado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GBURI.FirstOrDefault().Limitado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GBURI.FirstOrDefault().Errado)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.GBURI)
+    {
+        <tr>
+            <td> @item.URI </td>
+            <td> @item.Permitido </td>
+            <td> @item.Bloqueado </td>
+            <td> @item.Limitado </td>
+            <td> @item.Errado</td>
+        </tr>
+    }
+</table>

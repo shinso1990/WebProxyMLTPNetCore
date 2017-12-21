@@ -29,94 +29,22 @@ namespace WebProxyNETCore.Controllers
         //    return View();
         //}
 
-        public ActionResult Index(string IP, string URI, string GroupByIP, string GroupByURI, int startIndex, int pageSize  )
+        public ActionResult Index(string IP, string URI)
         {
-            IP = string.IsNullOrEmpty(IP) ? "" : IP.Trim();
-            URI = string.IsNullOrEmpty(URI) ? "" : URI.Trim();
+            
 
-            var Items = _comunicador.Get(
-                (x =>
-                (x.IP == "" || x.IP == IP) &&
-                (x.URI == "" || x.URI == URI)));
+            var listado1 = _comunicador.groupByIP(IP).Select(x => new InfoReqResGBIP(x) ).ToList();
+            var listado2 = _comunicador.groupByURI(URI).Select(x => new InfoReqResGBURI(x)).ToList();
 
-            return View(Items);
+            return View(new ListadoGBIpUri() { GBIP = listado1, GBURI = listado2 } );
         }
 
-
-
-        //// GET: InfoReqRes/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        //// GET: InfoReqRes/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: InfoReqRes/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: InfoReqRes/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: InfoReqRes/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: InfoReqRes/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: InfoReqRes/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
+
+    public class ListadoGBIpUri
+    {
+        public List<InfoReqResGBIP> GBIP { get; set; }
+        public List<InfoReqResGBURI> GBURI { get; set; }
+    }
+
 }

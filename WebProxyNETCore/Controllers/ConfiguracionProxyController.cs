@@ -57,12 +57,12 @@ namespace WebProxyNETCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("IdString,Key,Bloqueada,TipoContador")] ConfiguracionProxyModel configuracionProxyModel)
+        public IActionResult Create([Bind("IdString,Key,Bloqueada,TipoContador,CantidadTope")] ConfiguracionProxyModel configuracionProxyModel)
         {
             if (ModelState.IsValid)
             {
                 _comunicador.Insert(configuracionProxyModel);
-                //_redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
+                _redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
                 return RedirectToAction(nameof(Index));
             }
             return View(configuracionProxyModel);
@@ -90,7 +90,7 @@ namespace WebProxyNETCore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(string id, [Bind("IdString,Key,Bloqueada,TipoContador")] ConfiguracionProxyModel configuracionProxyModel)
+        public IActionResult Edit(string id, [Bind("IdString,Key,Bloqueada,TipoContador,CantidadTope")] ConfiguracionProxyModel configuracionProxyModel)
         {
             if (id != configuracionProxyModel.Key )
             {
@@ -104,7 +104,7 @@ namespace WebProxyNETCore.Controllers
                     var itemExistente = _comunicador.Get(x => x.Key == configuracionProxyModel.Key).FirstOrDefault();
                     configuracionProxyModel.Id = itemExistente.Id;
                     _comunicador.ReplaceOne(x=> x.Key ==   configuracionProxyModel.Key, configuracionProxyModel);
-                    //_redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
+                    _redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
                 }
                 catch (Exception e)
                 {
@@ -138,7 +138,7 @@ namespace WebProxyNETCore.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var configuracionProxyModel = _comunicador.DeleteOne(m => m.Key == id);
-            //_redisService.Delete(id);
+            _redisService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +75,7 @@ namespace WebProxyNETCore.DataAccess
                 throw e;
             }
         }
+
         public void ReplaceOne(System.Linq.Expressions.Expression<Func<T, bool>> filter, T objeto)
         {
             try
@@ -134,7 +136,7 @@ namespace WebProxyNETCore.DataAccess
             try
             {
                 List<T> listado = new List<T>();
-                using (var cursor = _collection .Find(filter).Project<T>(fields).Skip(startIndex).Limit(pageSize).ToCursor() )
+                using (var cursor = _collection.Find(filter).Project<T>(fields).Skip(startIndex).Limit(pageSize).ToCursor() )
                 {
                     while (cursor.MoveNextAsync().Result)
                     {
@@ -161,6 +163,175 @@ namespace WebProxyNETCore.DataAccess
                 throw e;
             }
         }
+        
+        internal List<BsonDocument> groupByURI(string URI)
+        {
+            BsonDocument match = null;
+            if(URI != null)
+                match = new BsonDocument
+                {
+                    {
+                        "$match",
+                        new BsonDocument
+                        {
+                            { "URI", URI }
+                        }
+                    }
+               };
 
+            var group = new BsonDocument
+                {
+                    { "$group",
+                        new BsonDocument
+                            {
+                                {
+                                    "_id", "$URI"
+                                },
+                                {
+                                    "Count", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", 1
+                                        }
+                                    }
+                                },
+                                {
+                                    "Permitido", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Permitido"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Limitado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Limitado"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Bloqueado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Bloqueado"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Errado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "Errado"
+                                        }
+                                    }
+                                }
+                            }
+                  }
+                };
+
+            var pipeline = new[] { group };
+            if (match != null)
+                pipeline = new[] { match, group };
+            
+
+            List<BsonDocument> listado = new List<BsonDocument>();
+            using (var cursor = _collection.Aggregate<BsonDocument>(pipeline))
+            {
+                while (cursor.MoveNextAsync().Result)
+                {
+                    var batch = cursor.Current;
+                    listado.AddRange(batch.ToList());
+                }
+            }
+            return listado;
+        }
+
+        internal List<BsonDocument> groupByIP(string IP)
+        {
+            BsonDocument match = null;
+            if (IP != null)
+                match = new BsonDocument
+                {
+                    {
+                        "$match",
+                        new BsonDocument
+                        {
+                            { "IP", IP }
+                        }
+                    }
+               };
+
+            var group = new BsonDocument
+                {
+                    { "$group",
+                        new BsonDocument
+                            {
+                                {
+                                    "_id", "$IP"
+                                },
+                                {
+                                    "Count", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", 1
+                                        }
+                                    }
+                                },
+                                {
+                                    "Permitido", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Permitido"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Limitado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Limitado"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Bloqueado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "$Bloqueado"
+                                        }
+                                    }
+                                },
+                                {
+                                    "Errado", new BsonDocument
+                                    {
+                                        {
+                                            "$sum", "Errado"
+                                        }
+                                    }
+                                }
+                            }
+                  }
+                };
+
+
+            var pipeline = new[] { group };
+            if (match != null)
+                pipeline = new[] { match, group };
+
+
+            List<BsonDocument> listado = new List<BsonDocument>();
+            using (var cursor = _collection.Aggregate<BsonDocument>(pipeline) )
+            {
+                while (cursor.MoveNextAsync().Result)
+                {
+                    var batch = cursor.Current;
+                    listado.AddRange(batch.ToList());
+                }
+            }
+            return listado;
+        }
+        
     }
 }

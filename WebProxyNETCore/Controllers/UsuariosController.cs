@@ -11,12 +11,12 @@ using WebProxyNETCore.DataAccess;
 
 namespace WebProxyNETCore.Controllers
 {
-    public class UsuariosModelsController : Controller
+    public class UsuariosController : Controller
     {
         private readonly IMongoDBService _mongoDBService;
         private ComunicadorMongoDB<UsuariosModel> _comunicador;
 
-        public UsuariosModelsController(IMongoDBService mongoDBService)
+        public UsuariosController(IMongoDBService mongoDBService)
         {
             _mongoDBService = mongoDBService;
             _comunicador = _mongoDBService.GetInstance<UsuariosModel>(_mongoDBService.CollectionUsuarios);
