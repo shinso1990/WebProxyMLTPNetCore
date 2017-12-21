@@ -62,7 +62,7 @@ namespace WebProxyNETCore.Controllers
             if (ModelState.IsValid)
             {
                 _comunicador.Insert(configuracionProxyModel);
-                _redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
+                _redisService.Set(configuracionProxyModel.Key, (configuracionProxyModel.Bloqueada ? "1" : "0") + "," + configuracionProxyModel.CantidadTope.ToString() + "," + configuracionProxyModel.TipoContador.ToString());
                 return RedirectToAction(nameof(Index));
             }
             return View(configuracionProxyModel);
@@ -104,7 +104,7 @@ namespace WebProxyNETCore.Controllers
                     var itemExistente = _comunicador.Get(x => x.Key == configuracionProxyModel.Key).FirstOrDefault();
                     configuracionProxyModel.Id = itemExistente.Id;
                     _comunicador.ReplaceOne(x=> x.Key ==   configuracionProxyModel.Key, configuracionProxyModel);
-                    _redisService.Set(configuracionProxyModel.Key, configuracionProxyModel.TipoContador.ToString() + "," + configuracionProxyModel.CantidadTope.ToString() + "," + (configuracionProxyModel.Bloqueada ? "1" : "0"));
+                    _redisService.Set(configuracionProxyModel.Key, (configuracionProxyModel.Bloqueada ? "1" : "0") + "," + configuracionProxyModel.CantidadTope.ToString() + "," + configuracionProxyModel.TipoContador.ToString());
                 }
                 catch (Exception e)
                 {
